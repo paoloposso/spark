@@ -4,11 +4,12 @@ const app = express();
 const port = process.env.PORT || 3000;
 require('dotenv').config();
 
-// const { ApartmentRepository } = require('./src/infrastructure/mongo-db/apartment-repository');
-
 const registerRoutes = () => {
-  // const apartmentRouter = require('./src/routes/apartment-routes');
-  // apartmentRouter.register(app, new ApartmentRepository());
+  const { createSparkpostRepository } = require('./src/infrastructure/mongo-db/sparkpost-repository');
+  const routes = require('./src/api/sparkpost-routes');
+  const repo = createSparkpostRepository();
+
+  routes.register(app, { repo });
 };
 
 const connectToMongo = async () => {
@@ -37,7 +38,7 @@ const connectToMongo = async () => {
 
   app.use(express.json());
 
-  // registerRoutes();
+  registerRoutes();
 
   app.listen(port, () => {
     console.log(`listening at port ${port}`);
