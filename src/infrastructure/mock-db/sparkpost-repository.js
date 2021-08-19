@@ -1,8 +1,19 @@
 const { makeSparkPost } = require('../../spark-posts/spark-post');
 
-const createSparkpostRepository = () => ({
+let existingPosts = [];
+
+/**
+ * 
+ * @param {[]} posts 
+ * @returns 
+ */
+const createSparkpostRepository = (posts) => { 
+    existingPosts = posts;
+
+    return () => ({
         getByName: async (name) => {
-                return makeSparkPost({ age: 500, name });
+            const result = existingPosts.find(post => post.name === name);
+            return result ? makeSparkPost(existingPosts.find(post => post.name === name)) : {};
         },
         insert: async ({ name, age }) => {
                 return makeSparkPost({ name, age });
@@ -10,6 +21,7 @@ const createSparkpostRepository = () => ({
         updateByName: async (name, { age }) => {
                 return makeSparkPost({ name, age });
         },
-});
+    });
+}
 
 module.exports = { createSparkpostRepository };
