@@ -31,8 +31,6 @@ it('should get by name', async () => {
 it('should not find inexistent name', async () => {
     const result = await getPostByName('paolox');
 
-    console.log(result);
-    
     expect(result).not.toBeUndefined();
     expect(result.name).toBeUndefined();
 });
