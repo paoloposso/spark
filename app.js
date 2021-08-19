@@ -1,8 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const morgan = require('morgan');
+
 const port = process.env.PORT || 3000;
 require('dotenv').config();
+
 
 const registerRoutes = () => {
   const { createSparkpostRepository } = require('./src/infrastructure/mongo-db/sparkpost-repository');
@@ -36,7 +39,9 @@ const connectToMongo = async () => {
 (async () => {
   await connectToMongo();
 
+  app.use(morgan('tiny'));
   app.use(express.json());
+
 
   registerRoutes();
 

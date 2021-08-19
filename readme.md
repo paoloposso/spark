@@ -8,7 +8,7 @@ A Spark Posts management API.
 
 ## API Endopoints
 
-### PUT: Update post
+### PUT: Update post using existing name
 Example:
 curl --location --request PUT 'localhost:3000/sparkpost' \
 --header 'Content-Type: application/json' \
@@ -17,7 +17,7 @@ curl --location --request PUT 'localhost:3000/sparkpost' \
     "name": "Testb"
 }'
 
-### POST: Insert new post using existing name
+### POST: Insert new post
 Example:
 curl --location --request POST 'localhost:3000/sparkpost' \
 --header 'Content-Type: application/json' \
@@ -50,6 +50,7 @@ This section describe the project structure as well as the design decision made 
 Contains the routes which are gonna be available to be called via http.
 The ```sparkpost.js``` file, for example, contains the routes reponsible for the spark posts use cases, such as creation, update and get of these objects.
 Also contains a file ```error-response.js```, that translates errors thrown by the applications into a single format with the proper http errors for each of them.
+This layer also has the responsibility of injecting the mongo repository, received by the ```app.js``` file, in the business layer.
 
 ### core
 Contains modules and objects that can be used by all other modules of the system, for example, the custom errors.
@@ -59,5 +60,9 @@ Contains the modules, classes and functions that comunicate with external framew
 The mocked database is also located inside of the infrastructure module.
 
 ### spark-posts
-Constains the business rules related to spark posts. It also indirectly comunicates with the database.
+Contains the business rules related to spark posts. It also indirectly comunicates with the database.
 It doesn't directly depend on the repository layer, so the repository is injected depending on the necessity on the outer layers, like as api ou tests layer.
+
+### app.js
+The startup file. Registers the middlewares and repositories, logs, databases and other injectable frameworks.
+Calls the repositores injection module, which registers the routes for the application.
