@@ -6,7 +6,6 @@ const morgan = require('morgan');
 const port = process.env.PORT || 3000;
 require('dotenv').config();
 
-
 const registerRoutes = () => {
   const { createSparkpostRepository } = require('./src/infrastructure/mongo-db/sparkpost-repository');
   const routes = require('./src/api/sparkpost-routes');
@@ -39,9 +38,8 @@ const connectToMongo = async () => {
 (async () => {
   await connectToMongo();
 
-  app.use(morgan('tiny'));
+  app.use(morgan('combined'));
   app.use(express.json());
-
 
   registerRoutes();
 
